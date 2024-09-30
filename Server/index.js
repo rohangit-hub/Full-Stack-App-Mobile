@@ -1,9 +1,13 @@
 import express from 'express'
+import color from 'colors-cli'
 import { getApi, postApi , deleteApi, patchApi, putApi} from './routs/routes.js'
 import cors from "cors"
+import dotenv from 'dotenv'
+dotenv.config()
+
+import dbConnection from "./model/dbConnection/dbConnection.js"
 
 const app = express()
-const port = 3000
 
 // Middlewares
 app.use(cors())  // CORS MIDDLEWARES
@@ -21,9 +25,12 @@ router.patch('/patch', patchApi)
 router.put('/put', putApi)
 
 
-
-
-
-app.listen(port, () => {
-  console.log(`Server Started at localhost/127.0.0.1 with port ${port}...`)
+dbConnection()
+.then(()=>{
+  app.listen(process.env.PORT, () => {
+    console.log(color.green_b(`SERVER STARTED AT LOCALHOST/127.0.0.1 AT PORT :: ${process.env.PORT} `))
+  })
+}).catch( (error)=>{
+  console.log(color.red_b(`DB CONNECTION ERROE :: ${error} :: PORT NUMBER ${process.env.PORT} `))
 })
+

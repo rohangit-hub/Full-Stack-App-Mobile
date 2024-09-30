@@ -1,3 +1,7 @@
+// import user from "../model/user.module.js"
+import {registration} from "../model/register.module.js";
+
+
 // GET API
 const getApi = (req,res) =>{
     res.send({"api": "get"})
@@ -5,7 +9,9 @@ const getApi = (req,res) =>{
 
 // POST API
 const postApi = (req,res) =>{
-    res.send({"api": "post"})
+    const userRegister = new registration(req.body)
+    userRegister.save()
+    res.json(userRegister)
 }
 
 // DELETE API
