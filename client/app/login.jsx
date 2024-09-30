@@ -56,7 +56,7 @@ const login = () => {
         onChangeText={(email)=> setEmail(email)}>
         </TextInput>
 
-
+        <View style ={{display:"flex", flexDirection: "row"}}> 
         <Text 
         style ={{
         color:"#6A4E44", 
@@ -64,13 +64,15 @@ const login = () => {
         fontWeight: "bold",
         textAlign: "left",
         marginLeft: 20,
+        verticalAlign: "middle"
         }}> 
         Password  
+        </Text>
 
         <Pressable onPress={ ()=> hide? setHide(false) & setshowHideText("Show"): setHide(true) & setshowHideText ("Hide")}>
-          <Text style = {{marginLeft : 240, fontWeight: "bold"}}> {showHideText} </Text>
+          <Text style = {{marginLeft : 170, fontWeight: "bold", verticalAlign: "middle"}}> {showHideText} </Text>
         </Pressable>
-        </Text>
+        </View>
 
         <TextInput 
         style={{

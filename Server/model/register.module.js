@@ -1,9 +1,9 @@
 import mongoose from 'mongoose';
 
 const registrationSchema = new mongoose.Schema({
-    name: "string",
-    email: "string",
-    password: "string"
+    Username: {type: "string"},
+    email: {type: "string"},
+    password: {type: "string"}
 
 }, {timestamps:true});
 

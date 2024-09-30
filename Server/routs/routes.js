@@ -11,7 +11,11 @@ const getApi = (req,res) =>{
 const postApi = (req,res) =>{
     const userRegister = new registration(req.body)
     userRegister.save()
-    res.json(userRegister)
+    res.status(200).send({
+        "success": true,
+        "message": "User Register into the database "
+    })
+    // console.log(userRegister)
 }
 
 // DELETE API
@@ -30,4 +34,4 @@ const putApi = (req,res) =>{
 }
 
 
-export  { getApi, postApi , deleteApi, patchApi, putApi}
+export { getApi, postApi , deleteApi, patchApi, putApi}
