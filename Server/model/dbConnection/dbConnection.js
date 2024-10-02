@@ -9,6 +9,6 @@ const dbConnection = async ()=>{
     }catch (error) {
         console.log(color.red_b(`DB CONNECTION ERROE ${error} `))
     }
-}
+};
 
-export default dbConnection;
+export default dbConnection

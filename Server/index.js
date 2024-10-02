@@ -18,8 +18,8 @@ const router = express.Router()
 app.use('/api/v1', router)
 
 // ALL ROUTES/ APIs
-router.get('/get', getApi)
-router.post('/post', postApi)
+router.get('/get', getApi)   // Login Routs
+router.post('/post', postApi) // Registration Routs
 router.delete('/delete', deleteApi)
 router.patch('/patch', patchApi)
 router.put('/put', putApi)

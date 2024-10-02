@@ -2,9 +2,38 @@
 import {registration} from "../model/register.module.js";
 
 
+
 // GET API
-const getApi = (req,res) =>{
-    res.send({"api": "get"})
+const getApi = async (req,res) =>{
+    const bodyData = req.body;
+
+    if(!bodyData || null){
+        res.send({"Message" : "Please enter valid Email or Password !"})
+    }
+    else{
+        const userData = await registration.findOne({ email: bodyData.email }).exec();
+
+        if(userData === null){
+            res.send({"response": "Please check the email or Password !"})
+        } 
+        else if(userData.email == bodyData.email){
+
+            const matchPassword = await userData.comparepassword(userData.password);
+
+            if(matchPassword == true){
+                res.send({"response Pass": bodyData, userData})
+            }else{
+                res.send({"Password match Response": matchPassword})
+            }
+
+        } 
+        else {
+            res.send({"response": "Please check the email or Password !"})
+        }
+
+    }
+
+    
 }
 
 // POST API
@@ -13,7 +42,7 @@ const postApi = (req,res) =>{
     userRegister.save()
     res.status(200).send({
         "success": true,
-        "message": "User Register into the database "
+        "message": `User: ${userRegister.Username} Register into the database `,
     })
     // console.log(userRegister)
 }
