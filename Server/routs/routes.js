@@ -18,7 +18,7 @@ const getApi = async (req,res) =>{
         } 
         else if(userData.email == bodyData.email){
 
-            const matchPassword = await userData.comparepassword(userData.password);
+            const matchPassword = await userData.comparepassword(bodyData.password);
 
             if(matchPassword == true){
                 res.send({"response Pass": bodyData, userData})

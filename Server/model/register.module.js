@@ -38,9 +38,12 @@ registrationSchema.methods.comparepassword = async function(userPassword){
         try {
             // compare password with Bcrypt
             const isMatched = await bcrypt.compare(userPassword , this.password)
-            console.log(userPassword , typeof(userPassword))
-            console.log(this.password , typeof(this.password))
-            console.log(isMatched)
+            if(isMatched){
+                console.log(`Password Matched...`)
+            }
+            else{
+                console.log(`Wrong Password...`)
+            }
             return isMatched;
             
         } catch (error) {
