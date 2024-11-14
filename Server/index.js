@@ -41,14 +41,23 @@ passport.use(new localStrategy( async function(username, password, done) {
 ));
 
 app.use(passport.initialize());
+const localAuthRouts = passport.authenticate('local', { session : false })
 
 
 // ALL ROUTES/ APIs
-router.get('/get',passport.authenticate('local', { session : false }), getApi)   // Login Routs
+router.get('/get',localAuthRouts, getApi)   // Login Routs
 router.post('/post', postApi) // Registration Routs
-router.delete('/delete', deleteApi)
-router.patch('/patch', patchApi)
-router.put('/put', putApi)
+router.delete('/delete',localAuthRouts, deleteApi)
+router.patch('/patch',localAuthRouts, patchApi)
+router.put('/put',localAuthRouts, putApi)
+
+/*
+{
+    "Username":"rkt@1",
+    "email":"rkt@.com",
+    "password":"123456"
+}
+*/
 
 
 dbConnection()
@@ -59,6 +68,4 @@ dbConnection()
 }).catch( (error)=>{
   console.log(color.red_b(`DB CONNECTION ERROE :: ${error} :: PORT NUMBER ${process.env.PORT} `))
 })
-
-// UPDATED
 

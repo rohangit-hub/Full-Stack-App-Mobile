@@ -5,9 +5,10 @@ import {registration} from "../model/register.module.js";
 
 // GET API
 const getApi = async (req,res) =>{
+    const userInputBody = req.body
     res.status(200).send({
         "success": true,
-        "message": `User logged in`,
+        "message": `User logged in with username -> ${userInputBody.username}`
     })
 }
     
