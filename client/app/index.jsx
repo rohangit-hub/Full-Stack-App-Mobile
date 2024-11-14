@@ -21,7 +21,7 @@ export default function index() {
         alert(`please enter valid data..!`);
         return;
       }
-      const {data} = await axios.post("http://192.168.1.38:3030/api/v1/post",{Username,email,password})
+      const {data} = await axios.post("http://192.168.11.220:3030/api/v1/post",{Username,email,password})
       console.log(`Response:: ${data.data}...`);
       
     }catch (error) {

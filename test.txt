@@ -1,0 +1,148 @@
+// import user from "../model/user.module.js"
+import {registration} from "../model/register.module.js";
+import passport from "passport";
+import { Strategy as localStrategy } from 'passport-local';
+
+// Authentication
+passport.use(new localStrategy){
+    async (USERNAME, PASSWORD, done)=>{
+    // Your Authentication Logic
+    
+    if(!bodyData || null){
+        res.send({"Message" : "Please enter valid Email or Password !"})
+    }
+    else{
+        const userData = await registration.findOne({ email: bodyData.email }).exec();
+
+        if(userData === null){
+            res.send({"response": "Please check the email or Password !"})
+        } 
+        else if(userData.email == bodyData.email){
+
+            const matchPassword = await userData.comparepassword(bodyData.password);
+
+            if(matchPassword == true){
+                res.send({"response Pass": bodyData, userData})
+            }else{
+                res.send({"Password match Response": matchPassword})
+            }
+
+        } 
+        else {
+            res.send({"response": "Please check the email or Password !"})
+        }
+
+    }
+
+
+    }
+}
+
+// GET API
+const getApi = async (req,res) =>{
+    const bodyData = req.body;
+
+    if(!bodyData || null){
+        res.send({"Message" : "Please enter valid Email or Password !"})
+    }
+    else{
+        const userData = await registration.findOne({ email: bodyData.email }).exec();
+
+        if(userData === null){
+            res.send({"response": "Please check the email or Password !"})
+        } 
+        else if(userData.email == bodyData.email){
+
+            const matchPassword = await userData.comparepassword(bodyData.password);
+
+            if(matchPassword == true){
+                res.send({"response Pass": bodyData, userData})
+            }else{
+                res.send({"Password match Response": matchPassword})
+            }
+
+        } 
+        else {
+            res.send({"response": "Please check the email or Password !"})
+        }
+
+    }
+
+    
+}
+
+// POST API
+const postApi = (req,res) =>{
+    const userRegister = new registration(req.body)
+    userRegister.save()
+    res.status(200).send({
+        "success": true,
+        "message": `User: ${userRegister.Username} Register into the database `,
+    })
+    // console.log(userRegister)
+}
+
+// DELETE API
+const deleteApi = (req,res) =>{
+    res.send({"api": "delete"})
+}
+
+// PATCH API
+const patchApi = (req,res) =>{
+    res.send({"api": "patch"})
+}
+
+// PUT API
+const putApi = (req,res) =>{
+    res.send({"api": "put"})
+}
+
+
+export { getApi, postApi , deleteApi, patchApi, putApi}
+
+
+////////////////////////////////////////////////////////////////////////////
+
+// Hashing Password field. // Dost use arrow as a callback
+registrationSchema.pre('save', async function(next) {
+    const person = this;
+
+    // DOnst Save if password fiels is modified 
+    if(!person.isModified('password')) return next();
+
+    // If password modified
+    try {
+
+        // Salt Generation
+        const salt = await bcrypt.genSalt(10);
+
+        // password hash generate
+        const hashedPassword = await bcrypt.hash(person.password , salt)
+
+        // swap hashed password with normal password
+        person.password = hashedPassword;
+        
+    } catch (error) {
+        return next(`Person not hashed: ${error}`);
+    }
+})
+
+registrationSchema.methods.comparepassword = async function(userPassword){
+        
+        // compare password
+        try {
+            // compare password with Bcrypt
+            const isMatched = await bcrypt.compare(userPassword , this.password)
+            if(isMatched){
+                console.log(`Password Matched...`)
+            }
+            else{
+                console.log(`Wrong Password...`)
+            }
+            return isMatched;
+            
+        } catch (error) {
+            console.log(error)
+        }
+    
+}
