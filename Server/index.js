@@ -8,6 +8,7 @@ import passport from "passport";
 import { Strategy as localStrategy } from 'passport-local';
 import dbConnection from "./model/dbConnection/dbConnection.js"
 import {registration} from "./model/register.module.js"
+import {jwtToken} from "./jwtAuth.js"
 
 
 // Middlewares
@@ -24,7 +25,7 @@ passport.use(new localStrategy( async function(username, password, done) {
 
   try {
     console.log(`recieved credential : ${username}, ${password}`)
-    const user = await registration.findOne({ Username : username })
+    const user = await registration.findOne({ username : username })
     if(!user){return done(null , false , {message:"not user"})}
     const isPasswordMatch = await user.comparepassword(password);
 
@@ -39,22 +40,26 @@ passport.use(new localStrategy( async function(username, password, done) {
   }
 }
 ));
-
 app.use(passport.initialize());
 const localAuthRouts = passport.authenticate('local', { session : false })
 
 
 // ALL ROUTES/ APIs
-router.get('/get',localAuthRouts, getApi)   // Login Routs
-router.post('/post', postApi) // Registration Routs
-router.delete('/delete',localAuthRouts, deleteApi)
+router.get('/get', getApi)   // Login Routs generate the JWT also while login  
+router.post('/post', postApi) // Registration Routs generate the JWT while register
+router.delete('/delete',jwtToken, deleteApi) // JWT TOKEN VALIDATION
 router.patch('/patch',localAuthRouts, patchApi)
 router.put('/put',localAuthRouts, putApi)
 
 /*
 {
-    "Username":"rkt@1",
+  POST
+    "username":"rkt@1",
     "email":"rkt@.com",
+    "password":"123456"
+
+  LOGIN
+    "username":"rkt@1",
     "password":"123456"
 }
 */

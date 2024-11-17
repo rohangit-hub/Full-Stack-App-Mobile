@@ -1,114 +1,166 @@
-// Login Page
+// INDEX = LOGIN PAGE
 
-import { View, Text, TextInput, Pressable,SafeAreaView } from 'react-native'
+import { View, Text, TextInput, Pressable, SafeAreaView } from "react-native";
 import { Link } from "expo-router";
-import React, { useState } from 'react'
-import { Image, ImageBackground } from 'react-native';
+import React, { useState } from "react";
+import { Image } from "react-native";
+import axios from "axios";
 
-const login = () => {
-  // STATES
-  const [email,setEmail] = useState();
-  const [password,setPassword] = useState();
-  const [hide,setHide] = useState(true);
-  const [showHideText ,setshowHideText] = useState ("Hide")
+export default function index() {
+  //STATES
+  const [Username, setUserName] = useState();
+  const [password, setPassword] = useState();
+  const [hide, setHide] = useState(true);
+  const [showHideText, setshowHideText] = useState("Hide");
+
+  // FUNCTIONS
+  const handleSubmit = async (username,password) => {
+    try {
+      if (!username || !password) {
+        alert(`please enter valid data..!`);
+        return;
+      }
+      const {data} = await axios.post("http://192.168.114.220:3030/api/v1/get",{username,password})
+      console.warn(`User ${username} Logged In`);
+      
+    }catch (error) {
+      console.log(`please enter valid data:: ${error}`);
+    }
+  };
 
   return (
     <SafeAreaView
-    style={{
-      flex: 3,
-      justifyContent: "center"
-    }}>
-      <Image source={require("../assets/images/bgimg3.jpg")} resizeMode="cover" style={{position:"absolute"}}/>
-      <Text 
-        style ={{
-        color:"#6A4E44", 
-        fontSize: 35,
-        fontWeight: "bold",
-        textAlign: "center",
-        margin: 30
-        }}> 
-        USER LOG!N </Text>
+      style={{
+        flex: 3,
+        justifyContent: "center",
+      }}
+    >
+      <Image
+        source={require("../assets/images/bgimg3.jpg")}
+        resizeMode="cover"
+        style={{ position: "absolute" }}
+      />
+      <Text
+        style={{
+          color: "#6A4E44",
+          fontSize: 35,
+          fontWeight: "bold",
+          textAlign: "center",
+          margin: 30,
+        }}
+      >
+        LOGIN USER{" "}
+      </Text>
 
-        <Text 
-        style ={{
-        color:"#6A4E44", 
-        fontSize: 20,
-        fontWeight: "bold",
-        textAlign: "left",
-        marginLeft: 20
-        }}> 
-        Email</Text>
+      <Text
+        style={{
+          color: "#6A4E44",
+          fontSize: 20,
+          fontWeight: "bold",
+          textAlign: "left",
+          marginLeft: 20,
+        }}
+      >
+        User Name
+      </Text>
 
-        <TextInput 
+      <TextInput
         style={{
           margin: 15,
-          color:"#000000",
+          color: "#000000",
           fontSize: 18,
           padding: 10,
           backgroundColor: "#dfd6ef",
           borderRadius: 20,
           opacity: 0.5,
           borderWidth: 1,
-          borderColor: "#6A4E44"
+          borderColor: "#6A4E44",
         }}
-        inputMode='text'
-        value={email}
-        onChangeText={(email)=> setEmail(email)}>
-        </TextInput>
+        inputMode="text"
+        value={Username}
+        onChangeText={(Username) => setUserName(Username)}
+      ></TextInput>
 
-        <View style ={{display:"flex", flexDirection: "row"}}> 
-        <Text 
-        style ={{
-        color:"#6A4E44", 
-        fontSize: 20,
-        fontWeight: "bold",
-        textAlign: "left",
-        marginLeft: 20,
-        verticalAlign: "middle"
-        }}> 
-        Password  
+      
+
+      <View style={{ display: "flex", flexDirection: "row" }}>
+        <Text
+          style={{
+            color: "#6A4E44",
+            fontSize: 20,
+            fontWeight: "bold",
+            textAlign: "left",
+            marginLeft: 20,
+            justifyContent: "center",
+          }}
+        >
+          Password
         </Text>
 
-        <Pressable onPress={ ()=> hide? setHide(false) & setshowHideText("Show"): setHide(true) & setshowHideText ("Hide")}>
-          <Text style = {{marginLeft : 170, fontWeight: "bold", verticalAlign: "middle"}}> {showHideText} </Text>
+        <Pressable
+          onPress={() =>
+            hide
+              ? setHide(false) & setshowHideText("Show")
+              : setHide(true) & setshowHideText("Hide")
+          }
+        >
+          <Text
+            style={{
+              marginLeft: 170,
+              fontWeight: "bold",
+              justifyContent: "center",
+            }}
+          >
+            {" "}
+            {showHideText}{" "}
+          </Text>
         </Pressable>
-        </View>
+      </View>
 
-        <TextInput 
+      <TextInput
         style={{
           margin: 15,
-          color:"#000000",
+          color: "#000000",
           fontSize: 18,
           padding: 10,
           backgroundColor: "#dfd6ef",
           borderRadius: 20,
           opacity: 0.5,
           borderWidth: 1,
-          borderColor: "#6A4E44"
+          borderColor: "#6A4E44",
         }}
-        inputMode='password'
+        inputMode="password"
         value={password}
-        onChangeText={(password)=> setPassword(password)}
-        secureTextEntry = {hide}>
-        </TextInput>
+        onChangeText={(password) => setPassword(password)}
+        secureTextEntry={hide}
+      ></TextInput>
 
-        {/* // hide this console.warn before push */}
-        <Pressable 
-          onPress={ () => console.warn(`email: ${email}  , password: ${password}`)}
-          onPressOut={ ()=> setEmail("") & setPassword("")}>
-        <Text style ={{
-        color:"#6A4E44", 
-        fontSize: 25,
-        fontWeight: "bold",
-        textAlign: "center",
-        justifyContent: "center",
-        }}>LOGIN</Text>
-        </Pressable>
+      {/* // hide this console.warn before push */}
+      <Pressable
+        onPressIn={() => {
+          handleSubmit(Username,password);
+        }}
+        onPressOut={() => setPassword("") & setUserName("")}
+      >
+        <Text
+          style={{
+            color: "#6A4E44",
+            fontSize: 25,
+            fontWeight: "bold",
+            textAlign: "center",
+            justifyContent: "center",
+          }}
+        >
+          LOGIN
+        </Text>
+      </Pressable>
 
-      <Text style={{textAlign: 'center', margin: 10}}>New User...<Link href={"/"} style={{color: "#5F3935", fontWeight: "bold"}}> Register</Link></Text>
+      <Text style={{ textAlign: "center", margin: 10 }}>
+        Register if not...
+        <Link href={"/"} style={{ color: "#5F3935", fontWeight: "bold" }}>
+          Register
+        </Link>
+      </Text>
     </SafeAreaView>
-
-  )
+  );
 }
-
-export default login

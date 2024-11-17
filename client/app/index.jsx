@@ -15,14 +15,14 @@ export default function index() {
   const [showHideText, setshowHideText] = useState("Hide");
 
   // FUNCTIONS
-  const handleSubmit = async (Username,email,password) => {
+  const handleSubmit = async (username,email,password) => {
     try {
-      if (!Username || !email || !password) {
+      if (!username || !email || !password) {
         alert(`please enter valid data..!`);
         return;
       }
-      const {data} = await axios.post("http://192.168.11.220:3030/api/v1/post",{Username,email,password})
-      console.log(`Response:: ${data.data}...`);
+      const {data} = await axios.post("http://192.168.114.220:3030/api/v1/post",{username,email,password})
+      console.warn(`User ${username} Register`);
       
     }catch (error) {
       console.log(`please enter valid data:: ${error}`);
